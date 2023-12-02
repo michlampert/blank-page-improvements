@@ -16,20 +16,12 @@
     "default_title": "Blank Page Improvements",
     "default_popup": "popup.html"
   },
-  "permissions": [
-    "storage",
-    "nativeMessaging",
-    "tabs"
-  ],
+  "permissions": ["storage", "nativeMessaging", "tabs"],
   "content_scripts": [
     {
-      "matches": [
-        "https://blank.page/*"
-      ],
+      "matches": ["https://blank.page/*"],
       "run_at": "document_idle",
-      "js": [
-        "contentScript.js"
-      ]
+      "js": ["contentScript.js"]
     }
   ]
 }

@@ -1,15 +1,4 @@
-// Content script file will run in the context of web page.
-// With content script you can manipulate the web pages using
-// Document Object Model (DOM).
-// You can also pass information to the parent extension.
-
-import { Settings, defaultSettings, restoreSettings } from './storage';
-
-// We execute this script by making an entry in manifest.json file
-// under `content_scripts` property
-
-// For more information on Content Scripts,
-// See https://developer.chrome.com/extensions/content_scripts
+import { Settings, restoreSettings } from './storage';
 
 function createComponent(names: string[]): HTMLElement {
   const container = document.createElement('div');
@@ -42,32 +31,39 @@ function createComponent(names: string[]): HTMLElement {
   return container;
 }
 
-function getPages(): string[] {
-  const re = /write-pageContent-(.*)/;
+function getPages(filtered: boolean = false): string[] {
+  const re = /write-pageId-(.*)/;
 
   return Object.keys(window.localStorage)
     .map((key) => re.exec(key)?.[1])
-    .filter((name): name is string => !!name);
+    .filter((name): name is string => !!name)
+    .filter(
+      (name) =>
+        !filtered ||
+        name == '/' ||
+        name == window.location.pathname ||
+        window.localStorage[`write-pageContent-${name}`]
+    );
 }
 
 function updateLinks(settings: Settings) {
-  console.log(settings);
+  document.getElementById('improvements-other-pages')?.remove();
   const sidebar = document.getElementById('sidebar-body');
 
   if (sidebar && settings.showOtherPages) {
-    document.getElementById('improvements-other-pages')?.remove();
-    const container = createComponent(getPages());
+    const container = createComponent(getPages(settings.hideEmptyPages));
     sidebar.appendChild(container);
   }
 }
 
-chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'UPDATE_SETTINGS') {
     restoreSettings(updateLinks);
   }
-  
+
   sendResponse({});
   true;
 });
 
 window.addEventListener('load', () => restoreSettings(updateLinks));
+document.getElementById('sheet')?.addEventListener('change', () => restoreSettings(updateLinks));

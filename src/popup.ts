@@ -45,26 +45,25 @@ function updateSettings() {
 
   settingsStorage.set(settings, () => {
     hideEmptyPagesSwitch.disabled = !showOtherPagesSwitch.checked;
-  });
-
-  chrome.tabs.query({}, (tabs) => {
-    tabs
-    .filter(tab => tab.url?.match(/blank.page/))
-      .forEach(tab => {
-        chrome.tabs.sendMessage(
-          tab.id!,
-          {
-            type: 'UPDATE_SETTINGS',
-            payload: {
-              tab: tab,
+    chrome.tabs.query({}, (tabs) => {
+      tabs
+        .filter((tab) => tab.url?.match(/blank.page/))
+        .forEach((tab) => {
+          chrome.tabs.sendMessage(
+            tab.id!,
+            {
+              type: 'UPDATE_SETTINGS',
+              payload: {
+                tab: tab,
+              },
             },
-          },
-          (response) => {
-            console.log(response);
-          }
-        )
-        console.log(tab)
-      })
+            (response) => {
+              console.log(response);
+            }
+          );
+          console.log(tab);
+        });
+    });
   });
 }
 
