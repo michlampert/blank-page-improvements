@@ -1,4 +1,4 @@
-# <img src="public/icons/icon_48.png" width="45" align="left"> Blank Page Improvements
+# <img src="public/icons/icon48.png" width="45" align="left"> Blank Page Improvements
 
 My Chrome Extension
 

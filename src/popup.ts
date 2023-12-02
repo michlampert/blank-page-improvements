@@ -16,12 +16,8 @@ import { Settings, restoreSettings, settingsStorage } from './storage';
 // https://developer.chrome.com/extensions/declare_permissions
 
 function setupSettings(settings: Settings) {
-  const showOtherPagesSwitch = document.getElementById(
-    'showOtherPagesSwitch'
-  ) as HTMLInputElement;
-  const hideEmptyPagesSwitch = document.getElementById(
-    'hideEmptyPagesSwitch'
-  ) as HTMLInputElement;
+  const showOtherPagesSwitch = document.getElementById('showOtherPagesSwitch') as HTMLInputElement;
+  const hideEmptyPagesSwitch = document.getElementById('hideEmptyPagesSwitch') as HTMLInputElement;
 
   showOtherPagesSwitch.checked = settings.showOtherPages;
   hideEmptyPagesSwitch.checked = settings.hideEmptyPages;
@@ -31,12 +27,8 @@ function setupSettings(settings: Settings) {
 }
 
 function updateSettings() {
-  const showOtherPagesSwitch = document.getElementById(
-    'showOtherPagesSwitch'
-  ) as HTMLInputElement;
-  const hideEmptyPagesSwitch = document.getElementById(
-    'hideEmptyPagesSwitch'
-  ) as HTMLInputElement;
+  const showOtherPagesSwitch = document.getElementById('showOtherPagesSwitch') as HTMLInputElement;
+  const hideEmptyPagesSwitch = document.getElementById('hideEmptyPagesSwitch') as HTMLInputElement;
 
   const settings = {
     showOtherPages: showOtherPagesSwitch.checked,
@@ -67,6 +59,4 @@ function updateSettings() {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () =>
-  restoreSettings(setupSettings)
-);
+document.addEventListener('DOMContentLoaded', () => restoreSettings(setupSettings));

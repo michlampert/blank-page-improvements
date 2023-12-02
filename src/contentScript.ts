@@ -21,11 +21,7 @@ function createComponent(names: string[]): HTMLElement {
         a.href = window.location.origin + name;
         return a;
       })
-      .flatMap((a: string | HTMLAnchorElement) => [
-        '↳ ',
-        a,
-        document.createElement('br'),
-      ])
+      .flatMap((a: string | HTMLAnchorElement) => ['↳ ', a, document.createElement('br')])
   );
 
   return container;
@@ -39,10 +35,7 @@ function getPages(filtered: boolean = false): string[] {
     .filter((name): name is string => !!name)
     .filter(
       (name) =>
-        !filtered ||
-        name == '/' ||
-        name == window.location.pathname ||
-        window.localStorage[`write-pageContent-${name}`]
+        !filtered || name == '/' || name == window.location.pathname || window.localStorage[`write-pageContent-${name}`]
     );
 }
 
