@@ -3,80 +3,71 @@
 // Document Object Model (DOM).
 // You can also pass information to the parent extension.
 
+import { Settings, defaultSettings, restoreSettings } from './storage';
+
 // We execute this script by making an entry in manifest.json file
 // under `content_scripts` property
 
 // For more information on Content Scripts,
 // See https://developer.chrome.com/extensions/content_scripts
 
-window.addEventListener("load", updateLinks)
-
 function createComponent(names: string[]): HTMLElement {
-  const container = document.createElement("div")
-  container.id = "improvements-other-pages"
+  const container = document.createElement('div');
+  container.id = 'improvements-other-pages';
 
-  const p = document.createElement("p")
-  p.innerHTML = "Other blank pages you've been working on:"
-  container.append(p)
+  const p = document.createElement('p');
+  p.innerHTML = "Other blank pages you've been working on:";
+  container.append(p);
 
   container.append(
-    ...names.toSorted()
+    ...names
+      .toSorted()
       .map((name: string): string | HTMLAnchorElement => {
         if (name == window.location.pathname) {
-          return name
+          return name;
         }
 
-        const a = document.createElement("a")
-        a.innerHTML = name
-        a.href = window.location.origin + name
-        return a
+        const a = document.createElement('a');
+        a.innerHTML = name;
+        a.href = window.location.origin + name;
+        return a;
       })
-      .flatMap((a: string | HTMLAnchorElement) => ["↳ ", a, document.createElement("br")])
-  )
+      .flatMap((a: string | HTMLAnchorElement) => [
+        '↳ ',
+        a,
+        document.createElement('br'),
+      ])
+  );
 
-  return container
+  return container;
 }
 
 function getPages(): string[] {
-  const re = /write-pageContent-(.*)/
+  const re = /write-pageContent-(.*)/;
 
   return Object.keys(window.localStorage)
-    .map(key => re.exec(key)?.[1])
-    .filter((name): name is string => !!name)
+    .map((key) => re.exec(key)?.[1])
+    .filter((name): name is string => !!name);
 }
 
-function updateLinks() {
-  const sidebar = document.getElementById("sidebar-body")
+function updateLinks(settings: Settings) {
+  console.log(settings);
+  const sidebar = document.getElementById('sidebar-body');
 
-  if (sidebar) {
-    document.getElementById("improvements-other-pages")?.remove()
-    const container = createComponent(getPages())
-    sidebar.appendChild(container)
+  if (sidebar && settings.showOtherPages) {
+    document.getElementById('improvements-other-pages')?.remove();
+    const container = createComponent(getPages());
+    sidebar.appendChild(container);
   }
-
 }
 
-// Communicate with background file by sending a message
-chrome.runtime.sendMessage(
-  {
-    type: 'GREETINGS',
-    payload: {
-      message: 'Hello, my name is Con. I am from ContentScript.',
-    },
-  },
-  (response) => {
-    console.log(response.message);
+chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
+  if (request.type === 'UPDATE_SETTINGS') {
+    restoreSettings(updateLinks);
   }
-);
-
-// Listen for message
-chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.type === 'COUNT') {
-    console.log(`Current count is ${request.payload.count}`);
-  }
-
-  // Send an empty response
-  // See https://github.com/mozilla/webextension-polyfill/issues/130#issuecomment-531531890
+  
   sendResponse({});
-  return true;
+  true;
 });
+
+window.addEventListener('load', () => restoreSettings(updateLinks));
