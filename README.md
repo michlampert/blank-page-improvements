@@ -1,11 +1,10 @@
-# <img src="public/icons/icon48.png" width="45" align="left"> Blank Page Improvements
+# <img src="public/icons/icon48.png" width="45" align="left">Blank Page Improvements
 
-My Chrome Extension
+Unofficial extension that adds some features requested by community to [blank.page](https://blank.page/) text editor
 
 ## Features
 
-- Feature 1
-- Feature 2
+- [x] other pages explorer
 
 ## Install
 
@@ -14,8 +13,3 @@ My Chrome Extension
 ## Contribution
 
 Suggestions and pull requests are welcomed!.
-
----
-
-This project was bootstrapped with [Chrome Extension CLI](https://github.com/dutiyesh/chrome-extension-cli)
-
