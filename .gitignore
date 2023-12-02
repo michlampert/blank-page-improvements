@@ -11,5 +11,5 @@
 
 npm-debug.log*
 
-# packed files
-/release
+# # packed files
+# /release
