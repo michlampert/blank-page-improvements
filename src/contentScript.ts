@@ -21,7 +21,7 @@ function createComponent(names: string[]): HTMLElement {
 
   container.append(
     ...names.toSorted()
-      .map(name => {
+      .map((name: string): string | HTMLAnchorElement => {
         if (name == window.location.pathname) {
           return name
         }
@@ -31,7 +31,7 @@ function createComponent(names: string[]): HTMLElement {
         a.href = window.location.origin + name
         return a
       })
-      .flatMap(a => ["↳ ", a, document.createElement("br")])
+      .flatMap((a: string | HTMLAnchorElement) => ["↳ ", a, document.createElement("br")])
   )
 
   return container

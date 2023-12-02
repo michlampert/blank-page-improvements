@@ -90,3 +90,10 @@ code {
   border: 0.5px dashed #000;
   opacity: 0.1;
 }
+
+.center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
