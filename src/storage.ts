@@ -1,11 +1,13 @@
 export interface Settings {
   showOtherPages: boolean;
   hideEmptyPages: boolean;
+  charactersCounterEnabled: boolean;
 }
 
 export const defaultSettings: Settings = {
   showOtherPages: true,
   hideEmptyPages: false,
+  charactersCounterEnabled: false,
 };
 
 export const settingsStorage = {

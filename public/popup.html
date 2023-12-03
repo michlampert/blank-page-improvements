@@ -11,12 +11,14 @@
       <div class="center">
         <a
           type="button"
-          class="btn btn-outline-dark center"
-          style="height: 7em; width: 7em; border-radius: 50%; margin: 1em"
+          class="d-flex justify-content-center align-items-center col-1 btn btn-outline-dark center"
+          style="height: 5em; width: 5em; border-radius: 50%; margin: 1em"
           href="https://github.com/michlampert/blank-page-improvements"
           target="_blank"
         >
-          <i class="bi bi-file-earmark-plus" style="font-size: 4em"></i>
+          <div>
+            <i class="bi bi-file-earmark-plus" style="font-size: 2em; margin: auto"></i>
+          </div>
         </a>
 
         <p class="title">Enable new <code>blank.page</code> features!</p>
@@ -28,7 +30,14 @@
           </div>
           <div class="form-check form-switch">
             <input class="form-check-input" type="checkbox" role="switch" id="hideEmptyPagesSwitch" />
-            <label class="form-check-label" for="hideEmptyPagesSwitch">Hide empty pages from list</label>
+            <label class="form-check-label" for="hideEmptyPagesSwitch">Hide empty pages from other pages list</label>
+          </div>
+          <div class="divider"></div>
+          <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="characterCounterFeatureSwitch" />
+            <label class="form-check-label" for="characterCounterFeatureSwitch"
+              >Count characters instead of words</label
+            >
           </div>
         </div>
       </div>

@@ -5,10 +5,15 @@ Unofficial extension that adds some features requested by community to [blank.pa
 ## Features
 
 - [x] other pages explorer
+- [x] characters counter
 
 ## Install
 
-[**Chrome** extension]() <!-- TODO: Add chrome extension link inside parenthesis -->
+Download package from [release directory](/release), unpack it and then load in `chrome://extensions/`
+
+or...
+
+[**Chrome** extension]() (soon) <!-- TODO: Add chrome extension link inside parenthesis -->
 
 ## Contribution
 
