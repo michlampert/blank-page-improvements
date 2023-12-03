@@ -1,50 +1,50 @@
-import { Settings } from "./storage";
+import { Settings } from './storage';
 
 export function createComponent(names: string[]): HTMLElement {
-    const container = document.createElement('div');
-    container.id = 'improvements-other-pages';
+  const container = document.createElement('div');
+  container.id = 'improvements-other-pages';
 
-    const p = document.createElement('p');
-    p.innerHTML = "Other blank pages you've been working on:";
-    container.append(p);
+  const p = document.createElement('p');
+  p.innerHTML = "Other blank pages you've been working on:";
+  container.append(p);
 
-    container.append(
-        ...names
-            .toSorted()
-            .map((name: string): string | HTMLAnchorElement => {
-                if (name == window.location.pathname) {
-                    return name;
-                }
+  container.append(
+    ...names
+      .toSorted()
+      .map((name: string): string | HTMLAnchorElement => {
+        if (name == window.location.pathname) {
+          return name;
+        }
 
-                const a = document.createElement('a');
-                a.innerHTML = name;
-                a.href = window.location.origin + name;
-                return a;
-            })
-            .flatMap((a: string | HTMLAnchorElement) => ['↳ ', a, document.createElement('br')])
-    );
+        const a = document.createElement('a');
+        a.innerHTML = name;
+        a.href = window.location.origin + name;
+        return a;
+      })
+      .flatMap((a: string | HTMLAnchorElement) => ['↳ ', a, document.createElement('br')])
+  );
 
-    return container;
+  return container;
 }
 
 export function getPages(filtered: boolean = false): string[] {
-    const re = /write-pageId-(.*)/;
+  const re = /write-pageId-(.*)/;
 
-    return Object.keys(window.localStorage)
-        .map((key) => re.exec(key)?.[1])
-        .filter((name): name is string => !!name)
-        .filter(
-            (name) =>
-                !filtered || name == '/' || name == window.location.pathname || window.localStorage[`write-pageContent-${name}`]
-        );
+  return Object.keys(window.localStorage)
+    .map((key) => re.exec(key)?.[1])
+    .filter((name): name is string => !!name)
+    .filter(
+      (name) =>
+        !filtered || name == '/' || name == window.location.pathname || window.localStorage[`write-pageContent-${name}`]
+    );
 }
 
 export function updateLinks(settings: Settings) {
-    document.getElementById('improvements-other-pages')?.remove();
-    const sidebar = document.getElementById('sidebar-body');
+  document.getElementById('improvements-other-pages')?.remove();
+  const sidebar = document.getElementById('sidebar-body');
 
-    if (sidebar && settings.showOtherPages) {
-        const container = createComponent(getPages(settings.hideEmptyPages));
-        sidebar.appendChild(container);
-    }
+  if (sidebar && settings.showOtherPages) {
+    const container = createComponent(getPages(settings.hideEmptyPages));
+    sidebar.appendChild(container);
+  }
 }

@@ -20,7 +20,6 @@ function setupSettings(settings: Settings) {
   const hideEmptyPagesSwitch = document.getElementById('hideEmptyPagesSwitch') as HTMLInputElement;
   const characterCounterFeatureSwitch = document.getElementById('characterCounterFeatureSwitch') as HTMLInputElement;
 
-
   showOtherPagesSwitch.checked = settings.showOtherPages;
   hideEmptyPagesSwitch.checked = settings.hideEmptyPages;
   characterCounterFeatureSwitch.checked = settings.charactersCounterEnabled;
@@ -38,7 +37,7 @@ function updateSettings() {
   const settings = {
     showOtherPages: showOtherPagesSwitch.checked,
     hideEmptyPages: hideEmptyPagesSwitch.checked,
-    charactersCounterEnabled: characterCounterFeatureSwitch.checked
+    charactersCounterEnabled: characterCounterFeatureSwitch.checked,
   };
 
   settingsStorage.set(settings, () => {

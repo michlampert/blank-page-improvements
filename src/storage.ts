@@ -1,7 +1,7 @@
 export interface Settings {
   showOtherPages: boolean;
   hideEmptyPages: boolean;
-  charactersCounterEnabled: boolean,
+  charactersCounterEnabled: boolean;
 }
 
 export const defaultSettings: Settings = {
