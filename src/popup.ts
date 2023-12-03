@@ -18,21 +18,27 @@ import { Settings, restoreSettings, settingsStorage } from './storage';
 function setupSettings(settings: Settings) {
   const showOtherPagesSwitch = document.getElementById('showOtherPagesSwitch') as HTMLInputElement;
   const hideEmptyPagesSwitch = document.getElementById('hideEmptyPagesSwitch') as HTMLInputElement;
+  const characterCounterFeatureSwitch = document.getElementById('characterCounterFeatureSwitch') as HTMLInputElement;
+
 
   showOtherPagesSwitch.checked = settings.showOtherPages;
   hideEmptyPagesSwitch.checked = settings.hideEmptyPages;
+  characterCounterFeatureSwitch.checked = settings.charactersCounterEnabled;
 
   showOtherPagesSwitch.addEventListener('input', updateSettings);
   hideEmptyPagesSwitch.addEventListener('input', updateSettings);
+  characterCounterFeatureSwitch.addEventListener('input', updateSettings);
 }
 
 function updateSettings() {
   const showOtherPagesSwitch = document.getElementById('showOtherPagesSwitch') as HTMLInputElement;
   const hideEmptyPagesSwitch = document.getElementById('hideEmptyPagesSwitch') as HTMLInputElement;
+  const characterCounterFeatureSwitch = document.getElementById('characterCounterFeatureSwitch') as HTMLInputElement;
 
   const settings = {
     showOtherPages: showOtherPagesSwitch.checked,
     hideEmptyPages: hideEmptyPagesSwitch.checked,
+    charactersCounterEnabled: characterCounterFeatureSwitch.checked
   };
 
   settingsStorage.set(settings, () => {

@@ -4,6 +4,8 @@ import { Settings, restoreSettings } from './storage';
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.type === 'UPDATE_SETTINGS') {
     restoreSettings(updateLinks);
+    restoreSettings(setupCharactersFeature)
+    restoreSettings(updateCharacterCountProgress)
   }
 
   sendResponse({});
@@ -13,6 +15,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 window.addEventListener('load', () => restoreSettings(updateLinks));
 document.getElementById('sheet')?.addEventListener('change', () => restoreSettings(updateLinks));
 
+window.addEventListener('load', () => restoreSettings(setupCharactersFeature));
+document.getElementById("sheet")!.addEventListener("input", () => restoreSettings(updateCharacterCountProgress))
+
 function getWordLimit() {
   return Number(window.localStorage.getItem(`write-pageWordGoal-${window.location.pathname}`) || "0")
 }
@@ -21,7 +26,12 @@ function getCharactersCount() {
   return (document.getElementById("sheet")! as HTMLTextAreaElement).value.length
 }
 
-function setupProgressBar(setting: Settings) {
+function setupProgressBar(settings: Settings) {
+  if (!settings.charactersCounterEnabled) {
+    document.getElementsByClassName("progress-bar charactersGoal")[0]?.remove()
+    return
+  }
+
   const progressBar = document.getElementsByClassName("progress-bar wordGoal")[0] as HTMLElement
   const charactersProgressBar = progressBar.cloneNode(true) as HTMLElement
   charactersProgressBar.classList.replace("wordGoal", "charactersGoal")
@@ -29,24 +39,36 @@ function setupProgressBar(setting: Settings) {
   progressBar.parentElement?.append(charactersProgressBar)
 }
 
-function setupMessages(setting: Settings) {
+function setupMessages(settings: Settings) {
+  const change1: [string, string] = ["Word", "Character"]
+  const change2: [string, string] = ["words", "characters"]
+
+  if (!settings.charactersCounterEnabled) {
+    change1.reverse()
+    change2.reverse()
+  }
+
   const label = (document.getElementsByClassName("select-option option-pageWordGoal")![0] as HTMLElement)
     .getElementsByClassName("select-option-label")![0] as HTMLElement
-  label.innerHTML = label.innerHTML.replace("Word", "Character")
+  label.innerHTML = label.innerHTML.replace(...change1)
 
   const message = document.getElementById("flash-rules")!.firstChild as HTMLElement
-  if (message) message.innerHTML = message.innerHTML.replace("words", "characters")
+  if (message) message.innerHTML = message.innerHTML.replace(...change2)
 }
 
 
 // Based on obvious observation that count of letters always is greater than count of words,
 // so limits will be reached earlier
-function setupCharactersFeature(setting: Settings) {
-  setupProgressBar(setting)
-  setupMessages(setting)
+function setupCharactersFeature(settings: Settings) {
+  setupProgressBar(settings)
+  setupMessages(settings)
 }
 
-function updateProgressBar(setting: Settings) {
+function updateProgressBar(settings: Settings) {
+  if (!settings.charactersCounterEnabled) {
+    return
+  }
+
   const progressBar = document.getElementsByClassName("progress-bar charactersGoal")[0] as HTMLElement
 
   const charactersCount = getCharactersCount()
@@ -55,7 +77,11 @@ function updateProgressBar(setting: Settings) {
   progressBar.style.transform = `translate(${Math.min(100.0 * charactersCount / wordLimit - 100, 0)}%, 0)`
 }
 
-function updateMessages(setting: Settings) {
+function updateMessages(settings: Settings) {
+  if (!settings.charactersCounterEnabled) {
+    return
+  }
+
   const progressAlert = document.getElementById("flash")!
 
   const charactersCount = getCharactersCount()
@@ -80,10 +106,7 @@ function updateMessages(setting: Settings) {
 }
 
 
-function updateCharacterCountProgress(setting: Settings) {
-  updateProgressBar(setting)
-  updateMessages(setting)
+function updateCharacterCountProgress(settings: Settings) {
+  updateProgressBar(settings)
+  updateMessages(settings)
 }
-
-window.addEventListener('load', () => restoreSettings(setupCharactersFeature));
-document.getElementById("sheet")!.addEventListener("input", () => restoreSettings(updateCharacterCountProgress))
